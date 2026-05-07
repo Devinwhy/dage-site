@@ -5,398 +5,295 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>曼谷游记 · BANGKOK 2026</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Playfair+Display:wght@400;700;900&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: -apple-system, 'Helvetica Neue', 'Noto Sans SC', sans-serif;
             background: #0a0a0a;
-            color: #fff;
-            overflow-x: hidden;
+            color: #e0e0e0;
+            line-height: 1.7;
         }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
 
-        /* HERO */
-        .hero {
-            height: 100vh;
-            min-height: 600px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* HEADER */
+        header {
             text-align: center;
-            position: relative;
-            background: linear-gradient(135deg, #1a0a0a 0%, #0d0d1a 40%, #1a1a0d 100%);
-            overflow: hidden;
+            padding: 80px 20px 40px;
+            background: linear-gradient(180deg, #0d0d1a 0%, #0a0a0a 100%);
         }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at 50% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
-            animation: pulseGlow 6s ease-in-out infinite;
+        header h1 {
+            font-size: clamp(2.2rem, 8vw, 5rem);
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #d4af37;
         }
-
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
+        header p {
+            color: #666;
+            margin-top: 10px;
+            font-size: 1rem;
+            letter-spacing: 6px;
         }
-
-        .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 10vw, 8rem);
-            font-weight: 900;
-            background: linear-gradient(135deg, #d4af37, #f5d76e, #d4af37);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 0.1em;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-sub {
-            font-weight: 300;
-            font-size: clamp(1rem, 2.5vw, 1.6rem);
-            letter-spacing: 0.5em;
-            color: rgba(255,255,255,0.6);
-            margin-top: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-line {
-            width: 60px;
-            height: 2px;
+        header .line {
+            width: 40px; height: 2px;
             background: #d4af37;
-            margin: 2rem auto;
-            position: relative;
-            z-index: 1;
+            margin: 20px auto;
         }
 
-        .hero-date {
-            font-weight: 300;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.4);
-            letter-spacing: 0.3em;
-            position: relative;
-            z-index: 1;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.5;
-            z-index: 1;
-        }
-
-        .scroll-dot {
-            width: 2px;
-            height: 30px;
-            background: linear-gradient(to bottom, #d4af37, transparent);
-            animation: scrollDown 2s ease-in-out infinite;
-        }
-
-        @keyframes scrollDown {
-            0% { transform: scaleY(0); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: scaleY(1); opacity: 0; }
-        }
-
-        /* GALLERY */
-        .gallery {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 6rem 2rem;
-        }
-
-        .gallery-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .gallery-header h2 {
-            font-weight: 300;
-            font-size: 2rem;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .gallery-header h2 span {
-            color: #d4af37;
-            font-weight: 700;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-        }
-
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
+        /* PHOTO CARD */
+        .photo-card {
+            margin: 40px 0;
             border-radius: 8px;
-            cursor: pointer;
-            aspect-ratio: 4/3;
-            background: #1a1a1a;
-            transition: transform 0.4s ease;
+            overflow: hidden;
+            background: #111;
         }
-
-        .gallery-item:hover {
-            transform: scale(1.02);
-        }
-
-        .gallery-item img {
+        .photo-card img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
+            display: block;
         }
-
-        .gallery-item:hover img {
-            transform: scale(1.08);
+        .photo-card .info {
+            padding: 20px 24px;
         }
-
-        .gallery-item .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 2rem 1.5rem 1.5rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-item:hover .overlay {
-            opacity: 1;
-        }
-
-        .gallery-item .overlay .num {
-            font-size: 0.8rem;
+        .photo-card .info .num {
             color: #d4af37;
-            font-weight: 500;
-            letter-spacing: 0.2em;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .photo-card .info h3 {
+            font-size: 1.1rem;
+            margin: 4px 0 8px;
+            font-weight: 600;
+            color: #fff;
+        }
+        .photo-card .info p {
+            font-size: 0.9rem;
+            color: #999;
+            line-height: 1.6;
         }
 
-        .gallery-item.wide {
-            grid-column: span 2;
-        }
-
-        .gallery-item.tall {
-            grid-row: span 2;
-        }
-
-        /* LIGHTBOX */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-        }
-
-        .lightbox.active {
-            display: flex;
-        }
-
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 4px;
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            font-size: 2rem;
-            color: rgba(255,255,255,0.6);
-            cursor: pointer;
-            background: none;
-            border: none;
-            transition: color 0.3s;
-        }
-
-        .lightbox-close:hover { color: #fff; }
-
-        .lightbox-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 3rem;
-            color: rgba(255,255,255,0.4);
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 20px;
-            transition: color 0.3s;
-        }
-
-        .lightbox-nav:hover { color: #d4af37; }
-        .lightbox-prev { left: 20px; }
-        .lightbox-next { right: 20px; }
-
-        /* FOOTER */
         footer {
             text-align: center;
-            padding: 3rem;
-            color: rgba(255,255,255,0.3);
-            font-weight: 300;
-            font-size: 0.85rem;
-            letter-spacing: 0.2em;
-        }
-
-        @media (max-width: 768px) {
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 12px;
-            }
-            .gallery-item.wide, .gallery-item.tall {
-                grid-column: span 1;
-                grid-row: span 1;
-            }
-            .lightbox { padding: 20px; }
-            .lightbox-nav { font-size: 2rem; }
-        }
-
-        /* LAZY LOAD */
-        .gallery-item img {
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-        .gallery-item img.loaded {
-            opacity: 1;
+            padding: 40px;
+            color: #333;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
-    <section class="hero">
-        <div class="hero-title">BANGKOK</div>
-        <div class="hero-line"></div>
-        <div class="hero-sub">曼谷游记</div>
-        <div class="hero-date">2026 · 春</div>
-        <div class="scroll-indicator">
-            <span style="font-size:0.7rem;letter-spacing:0.3em;color:rgba(255,255,255,0.3)">SCROLL</span>
-            <div class="scroll-dot"></div>
+<header>
+    <h1>BANGKOK</h1>
+    <div class="line"></div>
+    <p>曼谷游记 · 2026 春</p>
+</header>
+
+<div class="container">
+
+    <!-- 01 -->
+    <div class="photo-card">
+        <img src="photos/01.jpg" alt="大皇宫" loading="lazy">
+        <div class="info">
+            <div class="num">01</div>
+            <h3>大皇宫 · 金碧辉煌</h3>
+            <p>曼谷标志性建筑群，金碧辉煌的宫殿与佛塔，阳光下闪耀着金光。这里曾是暹罗国王的居所，每一处细节都透露着泰式建筑的极致奢华。</p>
         </div>
-    </section>
-
-    <section class="gallery" id="gallery">
-        <div class="gallery-header">
-            <h2>记录 · <span>曼谷</span></h2>
-        </div>
-        <div class="gallery-grid" id="galleryGrid"></div>
-    </section>
-
-    <footer>
-        MADE WITH ❤ · BANGKOK 2026
-    </footer>
-
-    <div class="lightbox" id="lightbox">
-        <button class="lightbox-close" id="lbClose">✕</button>
-        <button class="lightbox-nav lightbox-prev" id="lbPrev">‹</button>
-        <img id="lbImg" src="" alt="">
-        <button class="lightbox-nav lightbox-next" id="lbNext">›</button>
     </div>
 
-    <script>
-        const totalPhotos = 20;
-        const grid = document.getElementById('galleryGrid');
-        
-        const categories = [
-            '大皇宫 · 金碧辉煌', '湄南河 · 水上人家', '郑王庙 · 黎明之光',
-            '街头 · 烟火气', '夜市 · 食色生香', '佛影 · 虔诚',
-            '巷弄 · 慢时光', '美食 · 味蕾之旅', '夜色 · 流光溢彩',
-            '水上市场 · 桨声灯影', '宫殿 · 百年风华', '街角 · 不期而遇',
-            '寺庙 · 静谧', '运河 · 生活', '甜品 · 治愈',
-            '黄昏 · 曼谷', '摩天轮 · 河畔', '唐人街 · 牌楼',
-            '佛像 · 慈悲', '晚安 · 曼谷'
-        ];
+    <!-- 02 -->
+    <div class="photo-card">
+        <img src="photos/02.jpg" alt="湄南河" loading="lazy">
+        <div class="info">
+            <div class="num">02</div>
+            <h3>湄南河 · 水上人家</h3>
+            <p>穿城而过的母亲河，河面上往来的长尾船与水上市场，两岸的寺庙与高楼交相辉映，是曼谷最生动的风景线。</p>
+        </div>
+    </div>
 
-        // Create special layout: some wide/tall items
-        const special = { 0: 'wide', 3: 'tall', 8: 'wide', 14: 'tall', 19: 'wide' };
+    <!-- 03 -->
+    <div class="photo-card">
+        <img src="photos/03.jpg" alt="郑王庙" loading="lazy">
+        <div class="info">
+            <div class="num">03</div>
+            <h3>郑王庙 · 黎明之光</h3>
+            <p>坐落于湄南河西岸的黎明寺，主塔高耸入云，镶嵌着无数彩色瓷片，在阳光下熠熠生辉，是曼谷最美的寺庙之一。</p>
+        </div>
+    </div>
 
-        for (let i = 0; i < totalPhotos; i++) {
-            const num = String(i + 1).padStart(2, '0');
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            if (special[i]) item.classList.add(special[i]);
-            
-            item.innerHTML = `
-                <img src="photos/${num}.jpg" alt="曼谷 ${num}" loading="lazy">
-                <div class="overlay">
-                    <div class="num">${String(i+1).padStart(2,'0')}</div>
-                    <span style="font-weight:300;font-size:0.9rem">${categories[i]}</span>
-                </div>
-            `;
+    <!-- 04 -->
+    <div class="photo-card">
+        <img src="photos/04.jpg" alt="街头" loading="lazy">
+        <div class="info">
+            <div class="num">04</div>
+            <h3>街头 · 烟火气</h3>
+            <p>穿梭在曼谷的街头巷尾，摩托车轰鸣而过，路边摊飘来阵阵香气，这是最真实的曼谷日常。</p>
+        </div>
+    </div>
 
-            item.addEventListener('click', () => openLightbox(i));
-            
-            const img = item.querySelector('img');
-            img.onload = () => img.classList.add('loaded');
-            img.onerror = () => { img.src = ''; img.alt = '加载失败'; img.style.objectFit = 'contain'; img.style.padding = '2rem'; };
-            
-            grid.appendChild(item);
+    <!-- 05 -->
+    <div class="photo-card">
+        <img src="photos/05.jpg" alt="夜市" loading="lazy">
+        <div class="info">
+            <div class="num">05</div>
+            <h3>夜市 · 食色生香</h3>
+            <p>夜幕降临后的曼谷夜市，烤串、泰式炒粉、芒果糯米饭，各种美食琳琅满目，空气中弥漫着香料的味道。</p>
+        </div>
+    </div>
 
-            // Trigger load check for cached images
-            if (img.complete) img.classList.add('loaded');
-        }
+    <!-- 06 -->
+    <div class="photo-card">
+        <img src="photos/06.jpg" alt="佛影" loading="lazy">
+        <div class="info">
+            <div class="num">06</div>
+            <h3>佛影 · 虔诚</h3>
+            <p>曼谷街头随处可见的佛像与佛龛，鲜花与香火从不间断。这座城市在喧嚣之外，始终保持着虔诚的信仰。</p>
+        </div>
+    </div>
 
-        // LIGHTBOX
-        let currentIdx = 0;
-        const lb = document.getElementById('lightbox');
-        const lbImg = document.getElementById('lbImg');
-        
-        function openLightbox(idx) {
-            currentIdx = idx;
-            updateLightbox();
-            lb.classList.add('active');
-        }
+    <!-- 07 -->
+    <div class="photo-card">
+        <img src="photos/07.jpg" alt="巷弄" loading="lazy">
+        <div class="info">
+            <div class="num">07</div>
+            <h3>巷弄 · 慢时光</h3>
+            <p>拐进曼谷的小巷，繁华退去，露出生活本来的模样。老房子、慵懒的猫、晒着太阳的老人，时间在这里慢了下来。</p>
+        </div>
+    </div>
 
-        function updateLightbox() {
-            const num = String(currentIdx + 1).padStart(2, '0');
-            lbImg.src = `photos/${num}.jpg`;
-            lbImg.alt = `曼谷 ${categories[currentIdx]}`;
-        }
+    <!-- 08 -->
+    <div class="photo-card">
+        <img src="photos/08.jpg" alt="美食" loading="lazy">
+        <div class="info">
+            <div class="num">08</div>
+            <h3>美食 · 味蕾之旅</h3>
+            <p>冬阴功的酸辣、绿咖喱的浓郁、青木瓜沙拉的清爽，每一口都是泰国味觉的极致体验。</p>
+        </div>
+    </div>
 
-        document.getElementById('lbClose').addEventListener('click', () => lb.classList.remove('active'));
-        document.getElementById('lbPrev').addEventListener('click', () => {
-            currentIdx = (currentIdx - 1 + totalPhotos) % totalPhotos;
-            updateLightbox();
-        });
-        document.getElementById('lbNext').addEventListener('click', () => {
-            currentIdx = (currentIdx + 1) % totalPhotos;
-            updateLightbox();
-        });
+    <!-- 09 -->
+    <div class="photo-card">
+        <img src="photos/09.jpg" alt="夜色" loading="lazy">
+        <div class="info">
+            <div class="num">09</div>
+            <h3>夜色 · 流光溢彩</h3>
+            <p>曼谷的夜晚是另一种生命力的绽放，霓虹闪烁，车水马龙，整座城市在夜色中焕发出别样的魅力。</p>
+        </div>
+    </div>
 
-        document.addEventListener('keydown', (e) => {
-            if (!lb.classList.contains('active')) return;
-            if (e.key === 'Escape') lb.classList.remove('active');
-            if (e.key === 'ArrowLeft') { currentIdx = (currentIdx - 1 + totalPhotos) % totalPhotos; updateLightbox(); }
-            if (e.key === 'ArrowRight') { currentIdx = (currentIdx + 1) % totalPhotos; updateLightbox(); }
-        });
+    <!-- 10 -->
+    <div class="photo-card">
+        <img src="photos/10.jpg" alt="水上市场" loading="lazy">
+        <div class="info">
+            <div class="num">10</div>
+            <h3>水上市场 · 桨声灯影</h3>
+            <p>小船载着新鲜水果和热带美食在水道中穿梭，船夫的吆喝声此起彼伏，这是泰国独有的市井风情。</p>
+        </div>
+    </div>
 
-        lb.addEventListener('click', (e) => {
-            if (e.target === lb) lb.classList.remove('active');
-        });
-    </script>
+    <!-- 11 -->
+    <div class="photo-card">
+        <img src="photos/11.jpg" alt="宫殿" loading="lazy">
+        <div class="info">
+            <div class="num">11</div>
+            <h3>宫殿 · 百年风华</h3>
+            <p>古老的宫殿建筑群，见证了曼谷王朝的兴衰更迭。每一根廊柱、每一片瓦当都承载着厚重的历史。</p>
+        </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="photo-card">
+        <img src="photos/12.jpg" alt="街角" loading="lazy">
+        <div class="info">
+            <div class="num">12</div>
+            <h3>街角 · 不期而遇</h3>
+            <p>曼谷的魅力往往藏在那些不经意的街角——一面涂鸦墙、一辆复古tuk-tuk、一个微笑的路人。</p>
+        </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="photo-card">
+        <img src="photos/13.jpg" alt="寺庙" loading="lazy">
+        <div class="info">
+            <div class="num">13</div>
+            <h3>寺庙 · 静谧</h3>
+            <p>在闹市中走进一座寺庙，喧嚣瞬间被隔绝在外。金光闪闪的佛塔下，只有风吹铃铛的清脆声响。</p>
+        </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="photo-card">
+        <img src="photos/14.jpg" alt="运河" loading="lazy">
+        <div class="info">
+            <div class="num">14</div>
+            <h3>运河 · 生活</h3>
+            <p>曼谷被誉为"东方威尼斯"，纵横交错的运河两岸，吊脚楼与绿植交织，船是这里最方便的交通工具。</p>
+        </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="photo-card">
+        <img src="photos/15.jpg" alt="甜品" loading="lazy">
+        <div class="info">
+            <div class="num">15</div>
+            <h3>甜品 · 治愈</h3>
+            <p>芒果糯米饭的香甜、椰子冰淇淋的清爽、泰式奶茶的浓郁，每一口甜品都是炎热天气里最好的慰藉。</p>
+        </div>
+    </div>
+
+    <!-- 16 -->
+    <div class="photo-card">
+        <img src="photos/16.jpg" alt="黄昏" loading="lazy">
+        <div class="info">
+            <div class="num">16</div>
+            <h3>黄昏 · 曼谷</h3>
+            <p>日落时分的曼谷染上一层金色，湄南河上的船只剪影，远处寺庙的尖顶轮廓，这一刻的曼谷安静而温柔。</p>
+        </div>
+    </div>
+
+    <!-- 17 -->
+    <div class="photo-card">
+        <img src="photos/17.jpg" alt="摩天轮" loading="lazy">
+        <div class="info">
+            <div class="num">17</div>
+            <h3>摩天轮 · 河畔</h3>
+            <p>Asiatique河滨夜市的摩天轮，在夜色中缓缓转动，俯瞰着湄南河的灯火与游船，浪漫而梦幻。</p>
+        </div>
+    </div>
+
+    <!-- 18 -->
+    <div class="photo-card">
+        <img src="photos/18.jpg" alt="唐人街" loading="lazy">
+        <div class="info">
+            <div class="num">18</div>
+            <h3>唐人街 · 牌楼</h3>
+            <p>耀华力路上的唐人街，中文招牌林立，金店、药铺、海鲜排档热闹非凡，浓浓的中国风情融入了曼谷的血脉。</p>
+        </div>
+    </div>
+
+    <!-- 19 -->
+    <div class="photo-card">
+        <img src="photos/19.jpg" alt="佛像" loading="lazy">
+        <div class="info">
+            <div class="num">19</div>
+            <h3>佛像 · 慈悲</h3>
+            <p>卧佛寺中的巨大卧佛，慈眉善目，脚底刻有108个吉祥图案。在这里感受佛教文化的庄严与平和。</p>
+        </div>
+    </div>
+
+    <!-- 20 -->
+    <div class="photo-card">
+        <img src="photos/20.jpg" alt="晚安曼谷" loading="lazy">
+        <div class="info">
+            <div class="num">20</div>
+            <h3>晚安 · 曼谷</h3>
+            <p>最后一夜的曼谷，灯火璀璨的都市与宁静的寺庙共存。再见了，这座微笑的国度。期待下次相遇。</p>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    MADE WITH ❤ · BANGKOK 2026
+</footer>
+
 </body>
 </html>
