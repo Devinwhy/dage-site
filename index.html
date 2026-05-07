@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>曼谷游记 · BANGKOK 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Playfair+Display:wght@400;700;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* HERO */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, #1a0a0a 0%, #0d0d1a 40%, #1a1a0d 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 50% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+            animation: pulseGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #d4af37, #f5d76e, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.1em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-sub {
+            font-weight: 300;
+            font-size: clamp(1rem, 2.5vw, 1.6rem);
+            letter-spacing: 0.5em;
+            color: rgba(255,255,255,0.6);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-line {
+            width: 60px;
+            height: 2px;
+            background: #d4af37;
+            margin: 2rem auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-date {
+            font-weight: 300;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.3em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.5;
+            z-index: 1;
+        }
+
+        .scroll-dot {
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(to bottom, #d4af37, transparent);
+            animation: scrollDown 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { transform: scaleY(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: scaleY(1); opacity: 0; }
+        }
+
+        /* GALLERY */
+        .gallery {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-header h2 {
+            font-weight: 300;
+            font-size: 2rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .gallery-header h2 span {
+            color: #d4af37;
+            font-weight: 700;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            aspect-ratio: 4/3;
+            background: #1a1a1a;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 1.5rem 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .gallery-item .overlay .num {
+            font-size: 0.8rem;
+            color: #d4af37;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+        }
+
+        .gallery-item.wide {
+            grid-column: span 2;
+        }
+
+        .gallery-item.tall {
+            grid-row: span 2;
+        }
+
+        /* LIGHTBOX */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 2rem;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s;
+        }
+
+        .lightbox-close:hover { color: #fff; }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 20px;
+            transition: color 0.3s;
+        }
+
+        .lightbox-nav:hover { color: #d4af37; }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            color: rgba(255,255,255,0.3);
+            font-weight: 300;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 12px;
+            }
+            .gallery-item.wide, .gallery-item.tall {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            .lightbox { padding: 20px; }
+            .lightbox-nav { font-size: 2rem; }
+        }
+
+        /* LAZY LOAD */
+        .gallery-item img {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .gallery-item img.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-title">BANGKOK</div>
+        <div class="hero-line"></div>
+        <div class="hero-sub">曼谷游记</div>
+        <div class="hero-date">2026 · 春</div>
+        <div class="scroll-indicator">
+            <span style="font-size:0.7rem;letter-spacing:0.3em;color:rgba(255,255,255,0.3)">SCROLL</span>
+            <div class="scroll-dot"></div>
+        </div>
+    </section>
+
+    <section class="gallery" id="gallery">
+        <div class="gallery-header">
+            <h2>记录 · <span>曼谷</span></h2>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+
+    <footer>
+        MADE WITH ❤ · BANGKOK 2026
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lbClose">✕</button>
+        <button class="lightbox-nav lightbox-prev" id="lbPrev">‹</button>
+        <img id="lbImg" src="" alt="">
+        <button class="lightbox-nav lightbox-next" id="lbNext">›</button>
+    </div>
+
+    <script>
+        const totalPhotos = 20;
+        const grid = document.getElementById('galleryGrid');
+        
+        const categories = [
+            '大皇宫 · 金碧辉煌', '湄南河 · 水上人家', '郑王庙 · 黎明之光',
+            '街头 · 烟火气', '夜市 · 食色生香', '佛影 · 虔诚',
+            '巷弄 · 慢时光', '美食 · 味蕾之旅', '夜色 · 流光溢彩',
+            '水上市场 · 桨声灯影', '宫殿 · 百年风华', '街角 · 不期而遇',
+            '寺庙 · 静谧', '运河 · 生活', '甜品 · 治愈',
+            '黄昏 · 曼谷', '摩天轮 · 河畔', '唐人街 · 牌楼',
+            '佛像 · 慈悲', '晚安 · 曼谷'
+        ];
+
+        // Create special layout: some wide/tall items
+        const special = { 0: 'wide', 3: 'tall', 8: 'wide', 14: 'tall', 19: 'wide' };
+
+        for (let i = 0; i < totalPhotos; i++) {
+            const num = String(i + 1).padStart(2, '0');
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            if (special[i]) item.classList.add(special[i]);
+            
+            item.innerHTML = `
+                <img src="photos/${num}.jpg" alt="曼谷 ${num}" loading="lazy">
+                <div class="overlay">
+                    <div class="num">${String(i+1).padStart(2,'0')}</div>
+                    <span style="font-weight:300;font-size:0.9rem">${categories[i]}</span>
+                </div>
+            `;
+
+            item.addEventListener('click', () => openLightbox(i));
+            
+            const img = item.querySelector('img');
+            img.onload = () => img.classList.add('loaded');
+            img.onerror = () => { img.src = ''; img.alt = '加载失败'; img.style.objectFit = 'contain'; img.style.padding = '2rem'; };
+            
+            grid.appendChild(item);
+
+            // Trigger load check for cached images
+            if (img.complete) img.classList.add('loaded');
+        }
+
+        // LIGHTBOX
+        let currentIdx = 0;
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lbImg');
+        
+        function openLightbox(idx) {
+            currentIdx = idx;
+            updateLightbox();
+            lb.classList.add('active');
+        }
+
+        function updateLightbox() {
+            const num = String(currentIdx + 1).padStart(2, '0');
+            lbImg.src = `photos/${num}.jpg`;
+            lbImg.alt = `曼谷 ${categories[currentIdx]}`;
+        }
+
+        document.getElementById('lbClose').addEventListener('click', () => lb.classList.remove('active'));
+        document.getElementById('lbPrev').addEventListener('click', () => {
+            currentIdx = (currentIdx - 1 + totalPhotos) % totalPhotos;
+            updateLightbox();
+        });
+        document.getElementById('lbNext').addEventListener('click', () => {
+            currentIdx = (currentIdx + 1) % totalPhotos;
+            updateLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lb.classList.contains('active')) return;
+            if (e.key === 'Escape') lb.classList.remove('active');
+            if (e.key === 'ArrowLeft') { currentIdx = (currentIdx - 1 + totalPhotos) % totalPhotos; updateLightbox(); }
+            if (e.key === 'ArrowRight') { currentIdx = (currentIdx + 1) % totalPhotos; updateLightbox(); }
+        });
+
+        lb.addEventListener('click', (e) => {
+            if (e.target === lb) lb.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
