@@ -1,299 +1,352 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>曼谷游记 · BANGKOK 2026</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, 'Helvetica Neue', 'Noto Sans SC', sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            line-height: 1.7;
-        }
-        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
-
-        /* HEADER */
-        header {
-            text-align: center;
-            padding: 80px 20px 40px;
-            background: linear-gradient(180deg, #0d0d1a 0%, #0a0a0a 100%);
-        }
-        header h1 {
-            font-size: clamp(2.2rem, 8vw, 5rem);
-            font-weight: 800;
-            letter-spacing: 4px;
-            color: #d4af37;
-        }
-        header p {
-            color: #666;
-            margin-top: 10px;
-            font-size: 1rem;
-            letter-spacing: 6px;
-        }
-        header .line {
-            width: 40px; height: 2px;
-            background: #d4af37;
-            margin: 20px auto;
-        }
-
-        /* PHOTO CARD */
-        .photo-card {
-            margin: 40px 0;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #111;
-        }
-        .photo-card img {
-            width: 100%;
-            display: block;
-        }
-        .photo-card .info {
-            padding: 20px 24px;
-        }
-        .photo-card .info .num {
-            color: #d4af37;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            font-weight: 600;
-        }
-        .photo-card .info h3 {
-            font-size: 1.1rem;
-            margin: 4px 0 8px;
-            font-weight: 600;
-            color: #fff;
-        }
-        .photo-card .info p {
-            font-size: 0.9rem;
-            color: #999;
-            line-height: 1.6;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #333;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AI小说创作助手</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:#0f0f23;color:#e0e0e0;min-height:100vh}
+.header{background:linear-gradient(135deg,#1a1a3e,#2d1b69);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #333}
+.header h1{font-size:20px;color:#fff;font-weight:700}
+.header h1 span{color:#a78bfa}
+.btn{background:#7c3aed;color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:14px;cursor:pointer;transition:.2s;white-space:nowrap}
+.btn:hover{background:#6d28d9}
+.btn-outline{background:transparent;border:1px solid #7c3aed;color:#a78bfa}
+.btn-sm{padding:6px 14px;font-size:13px}
+.btn-success{background:#059669}
+.btn-warning{background:#d97706}
+.container{max-width:900px;margin:0 auto;padding:16px}
+.card{background:#1e1e3a;border-radius:14px;padding:20px;margin-bottom:16px;border:1px solid #2d2d5e}
+.card h2{font-size:16px;margin-bottom:12px;color:#a78bfa}
+.input-group{margin-bottom:12px}
+.input-group label{display:block;font-size:13px;color:#999;margin-bottom:4px}
+.input-group input,.input-group textarea,.input-group select{width:100%;padding:10px 14px;border-radius:8px;border:1px solid #333;background:#2a2a4a;color:#e0e0e0;font-size:14px;outline:none;transition:.2s}
+.input-group input:focus,.input-group textarea:focus{border-color:#7c3aed}
+.input-group textarea{min-height:80px;resize:vertical}
+.steps{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding:4px 0}
+.step-item{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;background:#2a2a4a;color:#666;white-space:nowrap;border:1px solid transparent;transition:.3s}
+.step-item.active{background:#7c3aed;color:#fff;border-color:#7c3aed}
+.step-item.done{background:#065f46;color:#6ee7b7;border-color:#059669}
+.step-item.current{background:#1e40af;color:#93c5fd;border-color:#3b82f6}
+.project-item{display:flex;justify-content:space-between;align-items:center;padding:14px;background:#2a2a4a;border-radius:10px;margin-bottom:10px;cursor:pointer;transition:.2s;border:1px solid transparent}
+.project-item:hover{background:#333366;border-color:#7c3aed}
+.project-item .info{flex:1}
+.project-item .title{font-size:15px;font-weight:600;color:#e0e0e0}
+.project-item .meta{font-size:12px;color:#888;margin-top:4px}
+.status-bar{display:none;padding:10px 20px;background:#065f46;color:#6ee7b7;font-size:14px;text-align:center;border-radius:8px;margin-bottom:12px}
+.content-area{white-space:pre-wrap;font-size:14px;line-height:1.8;color:#d0d0e0;padding:12px;background:#1a1a30;border-radius:8px;max-height:400px;overflow-y:auto;border:1px solid #2d2d5e}
+.loading{display:none;text-align:center;padding:30px;color:#a78bfa}
+.loading .spinner{width:36px;height:36px;border:3px solid #2d2d5e;border-top-color:#7c3aed;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flex{display:flex;gap:8px;flex-wrap:wrap}
+.hidden{display:none!important}
+.icon-btn{background:transparent;border:none;color:#999;padding:4px 8px;cursor:pointer;font-size:16px}
+.icon-btn:hover{color:#fff}
+.edit-area{display:none}
+.edit-area.show{display:block}
+</style>
 </head>
 <body>
-
-<header>
-    <h1>BANGKOK</h1>
-    <div class="line"></div>
-    <p>曼谷游记 · 2026 春</p>
-</header>
-
-<div class="container">
-
-    <!-- 01 -->
-    <div class="photo-card">
-        <img src="photos/01.jpg" alt="大皇宫" loading="lazy">
-        <div class="info">
-            <div class="num">01</div>
-            <h3>大皇宫 · 金碧辉煌</h3>
-            <p>曼谷标志性建筑群，金碧辉煌的宫殿与佛塔，阳光下闪耀着金光。这里曾是暹罗国王的居所，每一处细节都透露着泰式建筑的极致奢华。</p>
-        </div>
-    </div>
-
-    <!-- 02 -->
-    <div class="photo-card">
-        <img src="photos/02.jpg" alt="湄南河" loading="lazy">
-        <div class="info">
-            <div class="num">02</div>
-            <h3>湄南河 · 水上人家</h3>
-            <p>穿城而过的母亲河，河面上往来的长尾船与水上市场，两岸的寺庙与高楼交相辉映，是曼谷最生动的风景线。</p>
-        </div>
-    </div>
-
-    <!-- 03 -->
-    <div class="photo-card">
-        <img src="photos/03.jpg" alt="郑王庙" loading="lazy">
-        <div class="info">
-            <div class="num">03</div>
-            <h3>郑王庙 · 黎明之光</h3>
-            <p>坐落于湄南河西岸的黎明寺，主塔高耸入云，镶嵌着无数彩色瓷片，在阳光下熠熠生辉，是曼谷最美的寺庙之一。</p>
-        </div>
-    </div>
-
-    <!-- 04 -->
-    <div class="photo-card">
-        <img src="photos/04.jpg" alt="街头" loading="lazy">
-        <div class="info">
-            <div class="num">04</div>
-            <h3>街头 · 烟火气</h3>
-            <p>穿梭在曼谷的街头巷尾，摩托车轰鸣而过，路边摊飘来阵阵香气，这是最真实的曼谷日常。</p>
-        </div>
-    </div>
-
-    <!-- 05 -->
-    <div class="photo-card">
-        <img src="photos/05.jpg" alt="夜市" loading="lazy">
-        <div class="info">
-            <div class="num">05</div>
-            <h3>夜市 · 食色生香</h3>
-            <p>夜幕降临后的曼谷夜市，烤串、泰式炒粉、芒果糯米饭，各种美食琳琅满目，空气中弥漫着香料的味道。</p>
-        </div>
-    </div>
-
-    <!-- 06 -->
-    <div class="photo-card">
-        <img src="photos/06.jpg" alt="佛影" loading="lazy">
-        <div class="info">
-            <div class="num">06</div>
-            <h3>佛影 · 虔诚</h3>
-            <p>曼谷街头随处可见的佛像与佛龛，鲜花与香火从不间断。这座城市在喧嚣之外，始终保持着虔诚的信仰。</p>
-        </div>
-    </div>
-
-    <!-- 07 -->
-    <div class="photo-card">
-        <img src="photos/07.jpg" alt="巷弄" loading="lazy">
-        <div class="info">
-            <div class="num">07</div>
-            <h3>巷弄 · 慢时光</h3>
-            <p>拐进曼谷的小巷，繁华退去，露出生活本来的模样。老房子、慵懒的猫、晒着太阳的老人，时间在这里慢了下来。</p>
-        </div>
-    </div>
-
-    <!-- 08 -->
-    <div class="photo-card">
-        <img src="photos/08.jpg" alt="美食" loading="lazy">
-        <div class="info">
-            <div class="num">08</div>
-            <h3>美食 · 味蕾之旅</h3>
-            <p>冬阴功的酸辣、绿咖喱的浓郁、青木瓜沙拉的清爽，每一口都是泰国味觉的极致体验。</p>
-        </div>
-    </div>
-
-    <!-- 09 -->
-    <div class="photo-card">
-        <img src="photos/09.jpg" alt="夜色" loading="lazy">
-        <div class="info">
-            <div class="num">09</div>
-            <h3>夜色 · 流光溢彩</h3>
-            <p>曼谷的夜晚是另一种生命力的绽放，霓虹闪烁，车水马龙，整座城市在夜色中焕发出别样的魅力。</p>
-        </div>
-    </div>
-
-    <!-- 10 -->
-    <div class="photo-card">
-        <img src="photos/10.jpg" alt="水上市场" loading="lazy">
-        <div class="info">
-            <div class="num">10</div>
-            <h3>水上市场 · 桨声灯影</h3>
-            <p>小船载着新鲜水果和热带美食在水道中穿梭，船夫的吆喝声此起彼伏，这是泰国独有的市井风情。</p>
-        </div>
-    </div>
-
-    <!-- 11 -->
-    <div class="photo-card">
-        <img src="photos/11.jpg" alt="宫殿" loading="lazy">
-        <div class="info">
-            <div class="num">11</div>
-            <h3>宫殿 · 百年风华</h3>
-            <p>古老的宫殿建筑群，见证了曼谷王朝的兴衰更迭。每一根廊柱、每一片瓦当都承载着厚重的历史。</p>
-        </div>
-    </div>
-
-    <!-- 12 -->
-    <div class="photo-card">
-        <img src="photos/12.jpg" alt="街角" loading="lazy">
-        <div class="info">
-            <div class="num">12</div>
-            <h3>街角 · 不期而遇</h3>
-            <p>曼谷的魅力往往藏在那些不经意的街角——一面涂鸦墙、一辆复古tuk-tuk、一个微笑的路人。</p>
-        </div>
-    </div>
-
-    <!-- 13 -->
-    <div class="photo-card">
-        <img src="photos/13.jpg" alt="寺庙" loading="lazy">
-        <div class="info">
-            <div class="num">13</div>
-            <h3>寺庙 · 静谧</h3>
-            <p>在闹市中走进一座寺庙，喧嚣瞬间被隔绝在外。金光闪闪的佛塔下，只有风吹铃铛的清脆声响。</p>
-        </div>
-    </div>
-
-    <!-- 14 -->
-    <div class="photo-card">
-        <img src="photos/14.jpg" alt="运河" loading="lazy">
-        <div class="info">
-            <div class="num">14</div>
-            <h3>运河 · 生活</h3>
-            <p>曼谷被誉为"东方威尼斯"，纵横交错的运河两岸，吊脚楼与绿植交织，船是这里最方便的交通工具。</p>
-        </div>
-    </div>
-
-    <!-- 15 -->
-    <div class="photo-card">
-        <img src="photos/15.jpg" alt="甜品" loading="lazy">
-        <div class="info">
-            <div class="num">15</div>
-            <h3>甜品 · 治愈</h3>
-            <p>芒果糯米饭的香甜、椰子冰淇淋的清爽、泰式奶茶的浓郁，每一口甜品都是炎热天气里最好的慰藉。</p>
-        </div>
-    </div>
-
-    <!-- 16 -->
-    <div class="photo-card">
-        <img src="photos/16.jpg" alt="黄昏" loading="lazy">
-        <div class="info">
-            <div class="num">16</div>
-            <h3>黄昏 · 曼谷</h3>
-            <p>日落时分的曼谷染上一层金色，湄南河上的船只剪影，远处寺庙的尖顶轮廓，这一刻的曼谷安静而温柔。</p>
-        </div>
-    </div>
-
-    <!-- 17 -->
-    <div class="photo-card">
-        <img src="photos/17.jpg" alt="摩天轮" loading="lazy">
-        <div class="info">
-            <div class="num">17</div>
-            <h3>摩天轮 · 河畔</h3>
-            <p>Asiatique河滨夜市的摩天轮，在夜色中缓缓转动，俯瞰着湄南河的灯火与游船，浪漫而梦幻。</p>
-        </div>
-    </div>
-
-    <!-- 18 -->
-    <div class="photo-card">
-        <img src="photos/18.jpg" alt="唐人街" loading="lazy">
-        <div class="info">
-            <div class="num">18</div>
-            <h3>唐人街 · 牌楼</h3>
-            <p>耀华力路上的唐人街，中文招牌林立，金店、药铺、海鲜排档热闹非凡，浓浓的中国风情融入了曼谷的血脉。</p>
-        </div>
-    </div>
-
-    <!-- 19 -->
-    <div class="photo-card">
-        <img src="photos/19.jpg" alt="佛像" loading="lazy">
-        <div class="info">
-            <div class="num">19</div>
-            <h3>佛像 · 慈悲</h3>
-            <p>卧佛寺中的巨大卧佛，慈眉善目，脚底刻有108个吉祥图案。在这里感受佛教文化的庄严与平和。</p>
-        </div>
-    </div>
-
-    <!-- 20 -->
-    <div class="photo-card">
-        <img src="photos/20.jpg" alt="晚安曼谷" loading="lazy">
-        <div class="info">
-            <div class="num">20</div>
-            <h3>晚安 · 曼谷</h3>
-            <p>最后一夜的曼谷，灯火璀璨的都市与宁静的寺庙共存。再见了，这座微笑的国度。期待下次相遇。</p>
-        </div>
-    </div>
-
+<div class="header">
+  <h1>📖 AI<span>小说</span>创作助手</h1>
+  <button class="btn btn-sm" onclick="showNewProject()">✏️ 新建</button>
 </div>
+<div class="container">
+  <div id="statusBar" class="status-bar"></div>
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <div>AI正在创作中...请耐心等待</div>
+  </div>
+  <div id="pageList"></div>
+  <div id="pageProject" class="hidden"></div>
+</div>
+<script>
+const API_KEY = "37a321e059a84d9a9e4cb5497d63840e.nLZtnzyX6ufDtnEe";
+const API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
 
-<footer>
-    MADE WITH ❤ · BANGKOK 2026
-</footer>
+async function callGLM(messages, maxTokens=2048) {
+  const resp = await fetch(API_URL, {
+    method: 'POST',
+    headers: {'Authorization': `Bearer ${API_KEY}`, 'Content-Type': 'application/json'},
+    body: JSON.stringify({model: 'glm-4.7-flash', messages, max_tokens: maxTokens, temperature: 0.8})
+  });
+  const data = await resp.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.choices[0].message.content;
+}
 
+function getProjects() {
+  try { return JSON.parse(localStorage.getItem('novel_projects') || '[]'); } catch { return []; }
+}
+
+function saveProjects(projects) {
+  localStorage.setItem('novel_projects', JSON.stringify(projects));
+}
+
+function getProject(id) {
+  const projects = getProjects();
+  return projects.find(p => p.id === id);
+}
+
+function saveProject(project) {
+  let projects = getProjects();
+  const idx = projects.findIndex(p => p.id === project.id);
+  if (idx >= 0) projects[idx] = project;
+  else projects.push(project);
+  saveProjects(projects);
+}
+
+function showStatus(msg, isError) {
+  const bar = document.getElementById('statusBar');
+  bar.textContent = msg;
+  bar.style.display = 'block';
+  bar.style.background = isError ? '#7f1d1d' : '#065f46';
+  bar.style.color = isError ? '#fca5a5' : '#6ee7b7';
+  setTimeout(() => { bar.style.display = 'none'; }, 4000);
+}
+
+function showLoading(show) {
+  document.getElementById('loading').style.display = show ? 'block' : 'none';
+}
+
+// 页面: 列表
+function showList() {
+  document.getElementById('pageList').style.display = 'block';
+  document.getElementById('pageProject').classList.add('hidden');
+  document.getElementById('statusBar').style.display = 'none';
+  renderList();
+}
+
+function renderList() {
+  const projects = getProjects();
+  const el = document.getElementById('pageList');
+  if (projects.length === 0) {
+    el.innerHTML = '<div class="card"><h2>📚 我的作品</h2><p style="color:#666;text-align:center;padding:30px">还没有作品，点击右上角「新建」开始创作</p></div>';
+    return;
+  }
+  let html = '<div class="card"><h2>📚 我的作品</h2>';
+  projects.sort((a,b) => b.createdAt - a.createdAt);
+  projects.forEach(p => {
+    const chCnt = (p.chapters || []).filter(c => c.content).length;
+    const totalCh = (p.chapters || []).length;
+    html += `<div class="project-item" onclick="openProject('${p.id}')">
+      <div class="info">
+        <div class="title">${p.title}</div>
+        <div class="meta">${p.genre || '未分类'} · ${chCnt}/${totalCh}章</div>
+      </div>
+      <button class="icon-btn" onclick="event.stopPropagation();deleteProject('${p.id}')">🗑️</button>
+    </div>`;
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function deleteProject(id) {
+  if (!confirm('确定删除这部小说吗？')) return;
+  let projects = getProjects();
+  projects = projects.filter(p => p.id !== id);
+  saveProjects(projects);
+  showStatus('🗑️ 已删除');
+  renderList();
+}
+
+// 新建
+function showNewProject() {
+  const title = prompt('请输入小说标题：');
+  if (!title) return;
+  const genre = prompt('请输入小说题材（如：官场重生、修仙玄幻、都市异能等）：');
+  if (!genre) return;
+  const id = 'p_' + Date.now();
+  const project = {id, title, genre, outline: '', world: '', characters: '', chapters: [], coverUrl: '', createdAt: Date.now()};
+  saveProject(project);
+  showStatus('✅ 新建成功');
+  openProject(id);
+}
+
+// 打开项目
+function openProject(id) {
+  document.getElementById('pageList').style.display = 'none';
+  const page = document.getElementById('pageProject');
+  page.classList.remove('hidden');
+  renderProject(id);
+}
+
+function renderProject(id) {
+  const p = getProject(id);
+  if (!p) { showList(); return; }
+  const page = document.getElementById('pageProject');
+  const steps = [
+    {label: '大纲', done: !!p.outline},
+    {label: '世界观', done: !!p.world},
+    {label: '人物', done: !!p.characters},
+    {label: '章节', done: (p.chapters || []).length > 0},
+    {label: '正文', done: (p.chapters || []).filter(c => c.content).length > 0}
+  ];
+  const totalDone = steps.filter(s => s.done).length;
+  let stepsHtml = '<div class="steps">';
+  steps.forEach((s, i) => {
+    let cls = 'step-item';
+    if (s.done) cls += ' done';
+    if (!s.done && (i === 0 || steps[i-1].done)) cls += ' current';
+    stepsHtml += `<div class="${cls}">${s.label}</div>`;
+  });
+  stepsHtml += '</div>';
+
+  let bodyHtml = '';
+  // 章节列表
+  const chs = p.chapters || [];
+  if (chs.length > 0) {
+    bodyHtml += '<h3 style="margin:12px 0;color:#a78bfa">📑 章节</h3>';
+    chs.forEach((ch, i) => {
+      const hasContent = !!ch.content;
+      bodyHtml += `<div class="project-item" onclick="writeChapter('${p.id}',${i})" style="${hasContent ? 'border-color:#065f46' : ''}">
+        <div class="info">
+          <div class="title">${ch.title} ${hasContent ? '✅' : ''}</div>
+          <div class="meta">${ch.summary || ''}</div>
+        </div>
+      </div>`;
+    });
+  } else {
+    bodyHtml += '<p style="color:#666;text-align:center;padding:20px">还没有章节，先完成前置步骤</p>';
+  }
+
+  // 正文阅读区域
+  if (p.currentChapter !== undefined && chs[p.currentChapter] && chs[p.currentChapter].content) {
+    const ch = chs[p.currentChapter];
+    bodyHtml += `<h3 style="margin:12px 0;color:#a78bfa">📖 ${ch.title}</h3>
+    <div class="content-area">${ch.content}</div>`;
+    bodyHtml += `<div class="flex" style="margin-top:10px">
+      <button class="btn btn-sm btn-outline" onclick="editChapterContent('${p.id}',${p.currentChapter})">✏️ 编辑</button>
+    </div>`;
+  }
+
+  page.innerHTML = `
+    <div class="card">
+      <div class="flex" style="justify-content:space-between;align-items:center">
+        <h2>📖 ${p.title} <span style="font-size:13px;color:#888">${p.genre}</span></h2>
+        <button class="btn btn-sm btn-outline" onclick="showList()">← 返回</button>
+      </div>
+      ${stepsHtml}
+      <div style="text-align:right;font-size:12px;color:#666">${totalDone}/5 已完成</div>
+    </div>
+    <div class="card">
+      <h2>📝 创作</h2>
+      <div class="flex" style="margin-bottom:12px">
+        <button class="btn btn-sm" onclick="genStep('${p.id}',1)" ${p.outline ? 'disabled style="opacity:0.5"' : ''}>📜 生成大纲</button>
+        <button class="btn btn-sm" onclick="genStep('${p.id}',2)" ${!p.outline || p.world ? 'disabled style="opacity:0.5"' : ''}>🌍 生成世界观</button>
+        <button class="btn btn-sm" onclick="genStep('${p.id}',3)" ${!p.world || p.characters ? 'disabled style="opacity:0.5"' : ''}>👤 生成人物</button>
+        <button class="btn btn-sm" onclick="genStep('${p.id}',4)" ${!p.characters || chs.length > 0 ? 'disabled style="opacity:0.5"' : ''}>📑 规划章节</button>
+        <button class="btn btn-sm btn-success" onclick="genStep('${p.id}',5)" ${chs.length === 0 || chs.filter(c => !c.content).length === 0 ? 'disabled style="opacity:0.5"' : ''}>✍️ 写下一章</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📂 章节列表</h2>
+      ${bodyHtml}
+      <div class="flex" style="margin-top:12px">
+        <button class="btn btn-sm" onclick="showProjectInfo('${p.id}')">📋 查看大纲/人物/世界观</button>
+        <button class="btn btn-sm btn-outline" onclick="deleteProject('${p.id}');showList()">🗑️ 删除</button>
+      </div>
+    </div>
+  `;
+  window.__currentProjectId = p.id;
+}
+
+// 生成步骤
+async function genStep(projectId, step) {
+  const p = getProject(projectId);
+  if (!p) return;
+  showLoading(true);
+
+  try {
+    let content, data;
+    switch(step) {
+      case 1:
+        content = await callGLM([{role: 'system', content: '你是小说创作顾问。'}, {role: 'user', content: `生成故事大纲：${p.title}，${p.genre}，不少于800字。`}], 4096);
+        p.outline = content;
+        break;
+      case 2:
+        content = await callGLM([{role: 'system', content: '你是世界观构建专家。'}, {role: 'user', content: `世界观：${p.title}，${p.genre}，大纲：${p.outline.slice(0,3000)}，不少于600字。`}]);
+        p.world = content;
+        break;
+      case 3:
+        content = await callGLM([{role: 'system', content: '你是人物设计专家。'}, {role: 'user', content: `人物设定：${p.title}，大纲：${p.outline.slice(0,2000)}，世界观：${p.world.slice(0,2000)}，主角+配角+反派。`}]);
+        p.characters = content;
+        break;
+      case 4: {
+        content = await callGLM([{role: 'system', content: '你是小说编辑。'}, {role: 'user', content: `章节规划：${p.title}，${p.outline.slice(0,2000)}，10-30章。`}]);
+        const chapters = [];
+        content.split('\n').forEach(line => {
+          line = line.trim();
+          if (line.includes('章') && (line.includes('：') || line.includes('-'))) {
+            const sep = line.includes('：') ? '：' : '-';
+            const parts = line.split(sep, 2);
+            if (parts.length === 2) chapters.push({title: parts[0].trim(), summary: parts[1].trim(), content: ''});
+          }
+        });
+        p.chapters = chapters.length > 0 ? chapters : p.chapters;
+        break;
+      }
+      case 5: {
+        const chs = p.chapters || [];
+        const nextIdx = chs.findIndex(c => !c.content);
+        if (nextIdx < 0) { showLoading(false); showStatus('✅ 所有章节已完成！'); renderProject(projectId); return; }
+        const ch = chs[nextIdx];
+        let prev = '';
+        for (let i = 0; i < nextIdx; i++) {
+          if (chs[i].content) prev += `\n\n${chs[i].title}\n${chs[i].content.slice(0,500)}`;
+        }
+        content = await callGLM([{role: 'system', content: '你是资深小说作家。'}, {role: 'user', content: `写正文：${p.title}，${ch.title}，${ch.summary}，前文：${prev.slice(0,2000) || '第一章'}，1500字以上。`}], 4096);
+        chs[nextIdx].content = content;
+        p.currentChapter = nextIdx;
+        break;
+      }
+    }
+    saveProject(p);
+    showLoading(false);
+    showStatus(`✅ 步骤 ${step} 完成！`);
+    renderProject(projectId);
+  } catch(e) {
+    showLoading(false);
+    showStatus('❌ 生成失败：' + e.message, true);
+  }
+}
+
+// 写章节
+window.writeChapter = function(projectId, idx) {
+  const p = getProject(projectId);
+  if (!p) return;
+  p.currentChapter = idx;
+  saveProject(p);
+  renderProject(projectId);
+};
+
+// 编辑章节内容
+window.editChapterContent = function(projectId, idx) {
+  const p = getProject(projectId);
+  if (!p || !p.chapters[idx]) return;
+  const newContent = prompt('编辑章节内容：', p.chapters[idx].content);
+  if (newContent !== null) {
+    p.chapters[idx].content = newContent;
+    saveProject(p);
+    showStatus('✅ 已保存');
+    renderProject(projectId);
+  }
+};
+
+// 查看完整信息
+window.showProjectInfo = function(projectId) {
+  const p = getProject(projectId);
+  if (!p) return;
+  let msg = `【${p.title}】\n题材：${p.genre}\n\n`;
+  if (p.outline) msg += `📜 大纲：\n${p.outline.slice(0,500)}...\n\n`;
+  if (p.world) msg += `🌍 世界观：\n${p.world.slice(0,500)}...\n\n`;
+  if (p.characters) msg += `👤 人物：\n${p.characters.slice(0,500)}...`;
+  alert(msg);
+};
+
+// 初始化
+showList();
+</script>
 </body>
 </html>
